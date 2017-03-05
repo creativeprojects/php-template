@@ -15,6 +15,7 @@ services:
     volumes:
       - ./${PHP_FPM_CONFIGURATION}:/usr/local/etc/php-fpm.d/www.conf
       - ./${SOURCE_FOLDER}:/var/www/html
+      - xdebug:/tmp/xdebug
 
   nginx:
     image: ${NGINX_IMAGE}:${NGINX_VERSION}
@@ -26,3 +27,13 @@ services:
       - ./${NGINX_CONFIGURATION}:/etc/nginx/conf.d/default.conf
       - ./${SOURCE_FOLDER}:/var/www/html
 
+  webgrind:
+    image: ${WEBGRIND_IMAGE}
+    container_name: ${PROJECT_NAME}_webgrind
+    ports:
+      - ${WEBGRIND_HTTP_PORT}:80
+    volumes:
+      - xdebug:/tmp/xdebug
+
+volumes:
+  xdebug:
